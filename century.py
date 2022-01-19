@@ -8,7 +8,7 @@ class Century():
         self.coins = {'gold': 10, 'sliver': 10}
         self.all_card_normal, self.all_card_point = initGame(*readDataGame())
         self.card_point_close = self.all_card_point[:-5]
-        self.card_normal_close = self.all_card_point[:-5]
+        self.card_normal_close = self.all_card_normal[:-5]
         self.card_normal_open = self.all_card_normal[:5]
         self.card_point_open = setBonus(self.all_card_point[:5], self.coins)
         self.turn = 1
@@ -29,7 +29,7 @@ class Century():
 
                 if type(action_player) == type('string'):
                     action_player = [action_player]
-
+                
                 if not check_action(action_player):
                     raise Exception(f'NGƯỜI CHƠI {player.id} OUTPUT RA SAI SỬA ĐI')
 
@@ -65,7 +65,7 @@ class Century():
                     self.card_normal_open.remove(card)
 
                     if len(self.card_normal_close) != 0:
-                        self.card_normal_open += self.card_normal_close[-1]
+                        self.card_normal_open.append(self.card_normal_close[-1])
                         self.card_normal_close.pop()
 
                 elif action_player[0] == "card_upgrade":
@@ -94,7 +94,7 @@ class Century():
                     )
             self.turn += 1
 
-            if self.turn == 1000:
+            if self.turn == 10:
                 data_player[0].count_card = 5
                 data_player[0].count_point = 40
 

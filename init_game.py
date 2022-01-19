@@ -7,7 +7,7 @@ def initGame(data_card_normal, data_card_point):
     for i in range(len(data_card_point)):
         data_card_point[i]['bonus'] = 0
 
-    return data_card_normal, data_card_point
+    return list(data_card_normal), list(data_card_point)
 
 def setBonus(data_card_point, conis):
     if conis['gold'] == 0:
@@ -83,7 +83,8 @@ def check_dict(dt):
     return True
 
 def check_card(card):
-    if list(card.keys()) == ['give_back', 'recevie', 'upgrade', 'times']:
+    # print(card)
+    if list(card.keys()) == ['give_back', 'receive', 'upgrade', 'times']:
         return "card_normal"
 
     if list(card.keys()) == ['give_back', 'point', 'bonus']:

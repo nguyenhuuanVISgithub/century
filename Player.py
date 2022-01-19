@@ -29,10 +29,10 @@ class Player():
         if card not in all_card:
             raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: LẤY THẺ KHÔNG CÓ TRÊN BÀN')
         
-        if sum(list(material_giveback.values())) > pos-1:
+        if sum(list(material_giveback.values())) > pos:
             raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: NGUYÊN LIỆU TRẢ LẠI BÀN CHƠI THỪA ĐỂ LẤY THẺ')
         
-        if sum(list(material_giveback.values())) < pos-1:
+        if sum(list(material_giveback.values())) < pos:
             raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: NGUYÊN LIỆU TRẢ LẠI BÀN CHƠI KO ĐỦ ĐỂ LẤY THẺ') 
         
         for cl in self.material.keys():
