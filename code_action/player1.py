@@ -15,13 +15,11 @@
             các key là các màu của nguyên liệu(yellow,...)
             value là số nguyên liệu tương ứng
 '''
-# Nhật Anh
+
 from init_game import convert
 
 def action(player, card_normal, card_ponit, conis):
-    card = card_normal[0]
-    return 'get_card_normal', card, convert('0-0-0-0')
-    # return 'relax'
+    return 'relax'
 
                  
 

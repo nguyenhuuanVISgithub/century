@@ -15,11 +15,40 @@
             các key là các màu của nguyên liệu(yellow,...)
             value là số nguyên liệu tương ứng
 '''
-from init_game import convert
+from init_game import convert, check_get_card_point
 
 def action(player, card_normal, card_ponit, conis):
-    return 'relax'
+    #print(player.count_point)
+    target = card_ponit[0]['give_back']
+    total = sum(list(target.values()))
+    #print(card_ponit[0])
+    #print(player.material)
 
+    if check_get_card_point(player.material, card_ponit[0]):
+        return 'get_card_point', card_ponit[0]
+
+    if sum(list(player.material.values())) < total:
+        for card in player.card_close:
+            if card['upgrade'] == 0:
+                if total - sum(list(player.material.values())) == 1:
+                    return 'card_get_material', card, convert('1-0-0-0')
+                else:
+                    return 'card_get_material', card, convert('0-0-0-0')
+
+    else:
+        for card in player.card_close:
+            if card['upgrade'] > 0:
+                for cl in player.material.keys():
+                    if player.material[cl] > target[cl]:
+                        if cl == 'yellow':
+                            return 'card_update', card, convert('1-0-0-0'), convert('0-1-0-0')
+                        elif cl == 'red':
+                            return 'card_update', card, convert('0-1-0-0'), convert('0-0-1-0')
+                        elif cl == 'green':
+                            return 'card_update', card, convert('0-0-1-0'), convert('0-0-0-1')
+
+                #return 'card_update', card, convert('0-0-0-0'),
+    return 'relax'
 
                  
 

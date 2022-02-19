@@ -86,7 +86,7 @@ def check_card(card):
     if list(card.keys()) == ['give_back', 'receive', 'upgrade', 'times']:
         return "card_normal"
 
-    if list(card.keys()) == ['give_back', 'point', 'bonus']:
+    if list(card.keys()) == ['give_back', 'receive', 'bonus']:
         return 'card_point'
 
     return ''
@@ -112,8 +112,10 @@ def check_action(action):
 
     return False
 
+def check_get_card_point(m, card):
+    card = card['give_back']
+    for cl in m.keys():
+        if m[cl] < card[cl]:
+            return False
 
-
-print(convert('0-0-0-0'))
-b = ['0', '1', '0', '1']
-print(convert('-'.join(b)))
+    return True

@@ -42,12 +42,15 @@ class Player():
         self.card_close.append(card)
     
     def get_card_point(self, card):
-        if card not in self.card_close:
-            raise Exception("CODE BOT LỖI KHI LẤY THẺ")
+        # if card not in self.card_close:
+        #     raise Exception("CODE BOT LỖI KHI LẤY THẺ")
 
         self.card_point.append(card)
         self.count_card += 1
-        self.count_point += card['receive'] + card['bonus']
+        self.count_point += int(card['receive']) + int(card['bonus'])
+
+        for cl in self.material.keys():
+            self.material[cl] -= card['give_back'][cl]
     
     def use_card_exchange(self, card, times, material_remove):
         if card not in self.card_close:

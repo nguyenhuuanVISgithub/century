@@ -22,7 +22,7 @@ def readDataGame():
     data = pd.read_excel('data_card/card_point.xlsx', engine='openpyxl')
 
     data_card_point = [
-        {'give_back': data['card_point'][i], 'receive': data['ponit'][i]}
+        {'give_back': convert(data['card_point'][i]), 'receive': data['ponit'][i]}
         for i in range(len(data))
     ]
 
