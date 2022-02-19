@@ -16,13 +16,12 @@
             value là số nguyên liệu tương ứng
 '''
 # Nhật Anh
-# from init_game import convert
-def action(player, card_normal, card_ponit, conis):
-    card_lay = card_normal[0]
-    # print(card_normal)
-    # print(card_lay)
-    return 'get_card_normal', card_lay,{"yellow":0,"red":0,"green":0,"brown":0}
+from init_game import convert
 
+def action(player, card_normal, card_ponit, conis):
+    card = card_normal[0]
+    return 'get_card_normal', card, convert('0-0-0-0')
+    # return 'relax'
 
                  
 

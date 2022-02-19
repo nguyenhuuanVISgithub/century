@@ -15,6 +15,7 @@
             các key là các màu của nguyên liệu(yellow,...)
             value là số nguyên liệu tương ứng
 '''
+from init_game import convert
 
 def action(player, card_normal, card_ponit, conis):
     return 'relax'

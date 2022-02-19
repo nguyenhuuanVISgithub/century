@@ -26,10 +26,11 @@ class Century():
                 coins = self.coins.copy()
 
                 action_player = player.action(card_normal, card_point, coins)
+                #print(action_player)
 
                 if type(action_player) == type('string'):
                     action_player = [action_player]
-                
+
                 if not check_action(action_player):
                     raise Exception(f'NGƯỜI CHƠI {player.id} OUTPUT RA SAI SỬA ĐI')
 
@@ -68,7 +69,7 @@ class Century():
                         self.card_normal_open.append(self.card_normal_close[-1])
                         self.card_normal_close.pop()
 
-                elif action_player[0] == "card_upgrade":
+                elif action_player[0] == "card_update":
                     card = action_player[1].copy()
                     material_giveback = action_player[2].copy()
                     material_recevie = action_player[3].copy()
@@ -94,12 +95,13 @@ class Century():
                     )
             self.turn += 1
 
-            if self.turn == 10:
+            if self.turn == 2:
                 data_player[0].count_card = 5
                 data_player[0].count_point = 40
 
         id_win = check_player_win(data_player)
         show_point_players(data_player, id_win)
+        print(data_player[2].material)
 
 game = Century()
 game.run

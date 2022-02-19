@@ -15,9 +15,17 @@
             các key là các màu của nguyên liệu(yellow,...)
             value là số nguyên liệu tương ứng
 '''
+from init_game import convert
 
 def action(player, card_normal, card_ponit, conis):
-    return 'relax'
+    card = player.card_close[0]
+    a = {'yellow': 0, 'red': 0, 'green': 0, 'brown': 0}
+    c = 1
+    if c == 1:
+        a['yellow'] = 2
+
+    return 'card_update', card, convert(f'{c}-0-0-0'), convert('0-2-0-0')
+    #return 'relax'
 
 
                  

@@ -83,7 +83,6 @@ def check_dict(dt):
     return True
 
 def check_card(card):
-    # print(card)
     if list(card.keys()) == ['give_back', 'receive', 'upgrade', 'times']:
         return "card_normal"
 
@@ -114,3 +113,7 @@ def check_action(action):
     return False
 
 
+
+print(convert('0-0-0-0'))
+b = ['0', '1', '0', '1']
+print(convert('-'.join(b)))
