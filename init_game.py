@@ -54,9 +54,10 @@ def check_player_win(players):
         if players[i].count_point > max_point:
             max_point = players[i].count_point
     
-    for i in range(len(players)):
+    for i in range(len(players)-1, -1, -1):
         if players[i].count_point == max_point:
             id_win.append(i+1)
+            break
 
     return id_win
 

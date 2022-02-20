@@ -5,7 +5,7 @@ from Player import *
 class Century():
 
     def __init__(self):
-        self.coins = {'gold': 10, 'sliver': 10}
+        self.coins = {'gold': 10, 'silver': 10}
         self.all_card_normal, self.all_card_point = initGame(*readDataGame())
         self.card_point_close = self.all_card_point[:-5]
         self.card_normal_close = self.all_card_normal[:-5]
@@ -20,6 +20,7 @@ class Century():
             data_player.append(Player(id))
 
         while not stop_game(data_player):
+            print("Turn: ", self.turn)
             for player in data_player:
                 card_normal = self.card_normal_open.copy()
                 card_point = self.card_point_open.copy()
@@ -42,7 +43,7 @@ class Century():
                     player.get_card_point(action_player[1].copy())
 
                     if action_player[1]['bonus'] == 1:
-                        self.coins['sliver'] -= 1
+                        self.coins['silver'] -= 1
 
                     if action_player[1]['bonus'] == 3:
                         self.coins['gold'] -= 1
