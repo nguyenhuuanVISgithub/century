@@ -7,9 +7,9 @@ class Century():
     def __init__(self):
         self.coins = {'gold': 10, 'silver': 10}
         self.all_card_normal, self.all_card_point = initGame(*readDataGame())
-        self.card_point_close = self.all_card_point[:-5]
-        self.card_normal_close = self.all_card_normal[:-5]
-        self.card_normal_open = self.all_card_normal[:5]
+        self.card_point_close = self.all_card_point[5:]
+        self.card_normal_close = self.all_card_normal[6:]
+        self.card_normal_open = self.all_card_normal[:6]
         self.card_point_open = setBonus(self.all_card_point[:5], self.coins)
         self.turn = 1
     
