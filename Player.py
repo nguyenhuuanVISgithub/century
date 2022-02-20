@@ -1,6 +1,6 @@
 from read_data_game import convert
 from init_game import setDefault
-from code_action import player1, player2, player3, player4
+from code_action import player1 as p1, player2 as p2, player3 as p3, player4 as p4, player5 as p5
 from copy import deepcopy
 
 class Player():
@@ -9,7 +9,7 @@ class Player():
         self.id = id
         if id == 1:
             self.material = convert('3-0-0-0')
-        elif id == 4:
+        elif id == 4 or id == 5:
             self.material = convert('3-1-0-0')
         else:
             self.material = convert('4-0-0-0')
@@ -125,13 +125,16 @@ class Player():
 
     def action(self, card_normal, card_ponit, conis):
         if self.id == 1:
-            return player1.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p1.action(deepcopy(self), card_normal, card_ponit, conis)
         elif self.id == 2:
-            return player2.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p2.action(deepcopy(self), card_normal, card_ponit, conis)
         elif self.id == 3:
-            return player3.action(deepcopy(self), card_normal, card_ponit, conis)
-        else:
-            return player4.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p3.action(deepcopy(self), card_normal, card_ponit, conis)
+        elif self.id == 4:
+            return p4.action(deepcopy(self), card_normal, card_ponit, conis)
+        elif self.id == 5:
+            return p5.action(deepcopy(self), card_normal, card_ponit, conis)
+
         
 
     

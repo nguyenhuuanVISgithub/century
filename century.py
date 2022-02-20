@@ -2,21 +2,22 @@ from read_data_game import *
 from init_game import *
 from Player import *
 
+
 class Century():
 
     def __init__(self):
         self.coins = {'gold': 10, 'silver': 10}
         self.all_card_normal, self.all_card_point = initGame(*readDataGame())
-        self.card_point_close = self.all_card_point[:-5]
-        self.card_normal_close = self.all_card_normal[:-5]
-        self.card_normal_open = self.all_card_normal[:5]
+        self.card_point_close = self.all_card_point[5:]
+        self.card_normal_close = self.all_card_normal[6:]
+        self.card_normal_open = self.all_card_normal[:6]
         self.card_point_open = setBonus(self.all_card_point[:5], self.coins)
         self.turn = 1
-    
+
     @property
     def run(self):
         data_player = []
-        for id in range(1, 5):
+        for id in range(1, 6):
             data_player.append(Player(id))
 
         while not stop_game(data_player):
@@ -27,7 +28,7 @@ class Century():
                 coins = self.coins.copy()
 
                 action_player = player.action(card_normal, card_point, coins)
-                #print(action_player)
+                # print(action_player)
 
                 if type(action_player) == type('string'):
                     action_player = [action_player]
@@ -64,7 +65,7 @@ class Century():
                     pos = self.card_normal_open.index(card)
 
                     player.get_card_normal(card, material_giveback, all_card, pos)
-                    
+
                     self.card_normal_open.remove(card)
 
                     if len(self.card_normal_close) != 0:
@@ -77,13 +78,13 @@ class Century():
                     material_recevie = action_player[3].copy()
 
                     player.use_card_upgrade(card, material_giveback, material_recevie)
-                
+
                 elif action_player[0] == "card_get_material":
                     card = action_player[1].copy()
                     material_remove = action_player[2].copy()
-                    
+
                     player.use_card_get_material(card, material_remove)
-                
+
                 elif action_player[0] == "card_exchange":
                     card = action_player[1].copy()
                     times = action_player[2]
@@ -103,7 +104,8 @@ class Century():
 
         id_win = check_player_win(data_player)
         show_point_players(data_player, id_win)
-        #print(data_player[2].material)
+        # print(data_player[2].material)
+
 
 game = Century()
 game.run
