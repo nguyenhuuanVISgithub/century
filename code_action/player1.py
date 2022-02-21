@@ -33,7 +33,7 @@ def action(player, card_normal, card_point, conis):
     mua = True
     for card in card_point:
         if can_buy(player,card):
-            print("lấy điểm",target,player.material)
+            # print("lấy điểm",target,player.material)
             return 'get_card_point',card
     # print(target,player.material)
     trong_tay = list(player.material.values())
@@ -47,7 +47,7 @@ def action(player, card_normal, card_point, conis):
     if state == "lay_nl":
         for card in player.card_close:
             if (sum(card["receive"].values())) == 2:
-                print("lấy 2 vàng")
+                # print("lấy 2 vàng")
                 return "card_get_material", card, convert("0-0-0-0")
     else:
         #nâng cấp
@@ -72,15 +72,15 @@ def action(player, card_normal, card_point, conis):
             give_back = "-".join(map(str,list_nang_cap))
             receive = "-".join(map(str,list_nhan_ve))
             # print(give_back,receive)
-            print("nâng cấp 2 lần",give_back,receive,target,trong_tay)
+            # print("nâng cấp 2 lần",give_back,receive,target,trong_tay)
             return 'card_update', use, convert(give_back), convert(receive)
         else:
             for card in player.card_close:
                 if (sum(card["receive"].values())) == 2 and sum(trong_tay) <6:
-                    print("lấy 2 vàng")
+                    # print("lấy 2 vàng")
                     return "card_get_material", card, convert("0-0-0-0")
-            print("nghỉ 1")
+            # print("nghỉ 1")
             return "relax"
-    print("nghỉ 2")
+    # print("nghỉ 2")
     return "relax"
             
