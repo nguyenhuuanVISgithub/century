@@ -38,22 +38,24 @@ def phanloai(card):
     return None, 0
 
 def action(player, card_normal, card_point, conis):
-    diem = 0
-    card_n = None
-    for card in card_normal:
-        cost = card_normal.index(card)
-        if cost <= player.material["yellow"]:
-            ctype,score = phanloai(card)
-            if score > diem:
-                diem = score
-                card_n = card
-    #nếu có thẻ normal đẹp thì lấy
-    if card_n != None:
-        fee = str(card_normal.index(card_n)) + "-0-0-0"
-        print(fee,card_normal.index(card))
-        return 'get_card_normal', card_n, convert(fee)
+    # diem = 2
+    # card_n = None
+    # for card in card_normal:
+    #     cost = card_normal.index(card)
+    #     if cost <= player.material["yellow"]:
+    #         ctype,score = phanloai(card)
+    #         if score > diem:
+    #             diem = score
+    #             card_n = card
+    # #nếu có thẻ normal đẹp thì lấy
+    # if card_n != None:
+    #     fee = str(card_normal.index(card_n)) + "-0-0-0"
+    #     # print(fee,card_normal.index(card))
+    #     return 'get_card_normal', card_n, convert(fee)
     # else:
-        #nếu không thì chạy engine
+    #     # nếu không thì chạy engine
+    #     for card in player.card_close:
+    #         print(card)
     return 'relax'
 
                  

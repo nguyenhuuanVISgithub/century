@@ -27,13 +27,46 @@ def can_buy(player,card):
             break
     return mua
 
+def sapmua(player,card):
+    # sắp mua khi nâng cấp
+    thua = []
+    thieu = []
+    for nl in card['give_back'].keys():
+        thua_1 = (player.material[nl] - card['give_back'][nl])*(player.material[nl] > card['give_back'][nl])
+        thua.append(thua_1)
+        thieu_1 = card['give_back'][nl]- (player.material[nl] )*(card['give_back'][nl] > player.material[nl])
+        thieu.append(thieu_1)
+    if sum(thieu) <3:
+        # print("thừa",thua,"thiếu",thieu)
+        if sum(thieu) == 1:
+            # print(thieu.index(max(thieu)))
+            for idnl in range(thieu.index(max(thieu))):
+                if thua[idnl] > 0:
+                    return 1
+        if sum(thieu) == 2:
+            # print(thua,thieu)
+            if thieu[0] > 0:
+                return None
+            else:
+                for idnl in range(1,4):
+                    if thieu[idnl] > thua[idnl-1]:
+                        return None
+                return 2
+    # return False
+
+def future(player,card)
+
+
 def action(player, card_normal, card_point, conis):
     # target = [int(i) for i in card_point[0]["give_back"].split("-")]
     target = list(card_point[4]["give_back"].values())
     mua = True
     for card in card_point:
+        if sapmua(player,card) != None:
+            target = list(card["give_back"].values())
         if can_buy(player,card):
             # print("lấy điểm",target,player.material)
+            print(card_point.index(card))
             return 'get_card_point',card
     # print(target,player.material)
     trong_tay = list(player.material.values())
