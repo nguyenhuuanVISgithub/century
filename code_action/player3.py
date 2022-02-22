@@ -17,7 +17,7 @@
 '''
 from init_game import convert
 
-def action(player, card_normal, card_point, conis):
+def action(player, board):
 
     return 'relax'
 

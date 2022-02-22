@@ -27,7 +27,9 @@ def can_buy(player,card):
             break
     return mua
 
-def action(player, card_normal, card_point, conis):
+def action(player, board):
+    card_point = board['card_point']
+    card_normal = board['card_normal']
     # target = [int(i) for i in card_point[0]["give_back"].split("-")]
     target = list(card_point[4]["give_back"].values())
     mua = True

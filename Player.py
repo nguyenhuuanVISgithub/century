@@ -1,6 +1,6 @@
 from read_data_game import convert
 from init_game import setDefault
-from code_action import player1 as p1, player2 as p2, player3 as p3, player4 as p4, player5 as p5
+from code_action import player6 as p1, player2 as p2, player3 as p3, player4 as p4, player5 as p5
 from copy import deepcopy
 
 class Player():
@@ -25,7 +25,7 @@ class Player():
         self.card_close += self.card_open
         self.card_open = []
     
-    def get_card_normal(self, card, material_giveback, all_card, pos):
+    def get_card_normal(self, card, material_giveback, material_giveback2, all_card, pos):
         if card not in all_card:
             raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: LẤY THẺ KHÔNG CÓ TRÊN BÀN')
         
@@ -38,7 +38,13 @@ class Player():
         for cl in self.material.keys():
             if self.material[cl] < material_giveback[cl]:
                 raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: KHÔNG CÓ ĐỦ NGUYÊN LIỆU ĐỂ LẤY THẺ')
-        
+
+        for cl in self.material.keys():
+            self.material[cl] += card['bonus'][cl] - material_giveback2[cl]
+
+        if sum(list(self.material.values())) > 10:
+            raise Exception(f'NGƯỜI CHƠI {self.id} CODE BOT LỖI: Nguyên liệu vượt quá 10')
+
         self.card_close.append(card)
     
     def get_card_point(self, card):
@@ -123,17 +129,17 @@ class Player():
         self.card_open.append(card)
     
 
-    def action(self, card_normal, card_ponit, conis):
+    def action(self, board):
         if self.id == 1:
-            return p1.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p1.action(deepcopy(self), board)
         elif self.id == 2:
-            return p2.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p2.action(deepcopy(self), board)
         elif self.id == 3:
-            return p3.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p3.action(deepcopy(self), board)
         elif self.id == 4:
-            return p4.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p4.action(deepcopy(self), board)
         elif self.id == 5:
-            return p5.action(deepcopy(self), card_normal, card_ponit, conis)
+            return p5.action(deepcopy(self), board)
 
         
 

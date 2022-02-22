@@ -1,6 +1,7 @@
 from read_data_game import *
 from init_game import *
 from Player import *
+from copy import deepcopy
 
 
 class Century():
@@ -27,7 +28,17 @@ class Century():
                 card_point = self.card_point_open.copy()
                 coins = self.coins.copy()
 
-                action_player = player.action(card_normal, card_point, coins)
+                ps_players = []
+                for p in data_player:
+                    if player.id != p.id:
+                        ps_players.append(deepcopy(p))
+                        ps_players[-1].card_close = []
+
+                board_game = {'turn': self.turn, 'coins': self.coins, 'card_normal': self.card_normal_open.copy(),
+                              'card_point': self.card_point_open.copy(), 'players': ps_players}
+
+
+                action_player = player.action(board_game)
                 # print(action_player)
 
                 if type(action_player) == type('string'):
@@ -61,10 +72,24 @@ class Century():
 
                     card = action_player[1].copy()
                     material_giveback = action_player[2].copy()
+                    material_giveback = action_player[3].copy()
                     all_card = self.card_normal_open.copy()
                     pos = self.card_normal_open.index(card)
 
                     player.get_card_normal(card, material_giveback, all_card, pos)
+
+                    if pos != 0:
+                        color = ['yellow', 'red', 'green', 'brown']
+                        st = 0
+                        ps_pos = 0
+                        while ps_pos < pos:
+                            if material_giveback[color[st]] != 0:
+                                self.card_normal_open['bonus'][color[st]] += 1
+                                material_giveback[color[st]] -= 1
+                                ps_pos += 1
+                            else:
+                                st += 1
+
 
                     self.card_normal_open.remove(card)
 
@@ -98,7 +123,7 @@ class Century():
                     )
             self.turn += 1
 
-            if self.turn == 500:
+            if self.turn == 2:
                 data_player[0].count_card = 5
                 data_player[0].count_point = 40
 

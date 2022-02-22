@@ -16,7 +16,7 @@
             value là số nguyên liệu tương ứng
 '''
 
-def action(player, card_normal, card_point, conis):
+def action(player, board):
     return 'relax'
 
 

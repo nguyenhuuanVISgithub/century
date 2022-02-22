@@ -1,7 +1,7 @@
 '''
     Nghỉ Ngơi: return 'relax'
     Lấy thẻ có điểm: 'get_card_point', card
-    Lấy thẻ không có điểm: 'get_card_normal', card, material_giveback
+    Lấy thẻ không có điểm: 'get_card_normal', card, material_giveback, material_giveback2
     Sử dụng thẻ:
         - update: 'card_update', card, material_giveback, material_receive
         - get_material: 'card_get_material', card, material_remove
@@ -17,8 +17,12 @@
 '''
 from init_game import convert, check_get_card_point
 
-def action(player, card_normal, card_point, conis):
-    #print(player.count_point)
+def action(player, board):
+    card_point = board['card_point']
+    card_normal = board['card_normal']
+    print(card_normal[0])
+    print(card_point[0])
+
     target = card_point[0]['give_back']
     total = sum(list(target.values()))
     #print(card_ponit[0])
