@@ -16,6 +16,33 @@
             value là số nguyên liệu tương ứng
 '''
 from init_game import convert
+import numpy as np
+def future(fn,cards):
+    items = []
+    for f in fn:
+        for the in cards:
+            states = []
+            if the['upgrade'] == 0:
+                card = [np.array(list(the['give_back'].values())),np.array(list(the['receive'].values())),0]
+                max = the['times']
+                for idnl in range(4):
+                    if card[0][idnl] > 0:
+                        times = f[idnl]//card[0][idnl]
+                        if times < max:
+                            max = times
+                # lần = 0
+                for lan in range(max):
+                    state = f - card[0]*(lan+1) + card[1]*(lan+1)
+                    while sum(state) > 10:
+                        thua = sum(state) - 10
+                        for idnl in range(4):
+                            state[idnl] -= min(thua,state[idnl])
+                    states.append(state)
+            new_cards = [car for car in cards if car != the]
+            item = [states,new_cards]
+            items.append(item)
+    print(items)
+    return states
 
 def phanloai(card):
     if card["upgrade"] >0:
@@ -38,24 +65,27 @@ def phanloai(card):
     return None, 0
 
 def action(player, card_normal, card_point, conis):
-    # diem = 2
-    # card_n = None
-    # for card in card_normal:
-    #     cost = card_normal.index(card)
-    #     if cost <= player.material["yellow"]:
-    #         ctype,score = phanloai(card)
-    #         if score > diem:
-    #             diem = score
-    #             card_n = card
-    # #nếu có thẻ normal đẹp thì lấy
-    # if card_n != None:
-    #     fee = str(card_normal.index(card_n)) + "-0-0-0"
-    #     # print(fee,card_normal.index(card))
-    #     return 'get_card_normal', card_n, convert(fee)
-    # else:
+    diem = 5
+    card_n = None
+    for card in card_normal:
+        cost = card_normal.index(card)
+        if cost <= player.material["yellow"]:
+            ctype,score = phanloai(card)
+            if score > diem:
+                diem = score
+                card_n = card
+    #nếu có thẻ normal đẹp thì lấy
+    if card_n != None:
+        fee = str(card_normal.index(card_n)) + "-0-0-0"
+        print("lấy thẻ đổi",list(card_n['give_back'].values()),"lấy",list(card_n['receive'].values()))
+        return 'get_card_normal', card_n, convert(fee)
+    else:
     #     # nếu không thì chạy engine
     #     for card in player.card_close:
     #         print(card)
+        fn = [np.array(list(player.material.values()))]
+        cards = player.card_close
+        future(fn,cards)
     return 'relax'
 
                  

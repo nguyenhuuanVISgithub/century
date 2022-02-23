@@ -15,6 +15,7 @@
             các key là các màu của nguyên liệu(yellow,...)
             value là số nguyên liệu tương ứng
 '''
+import numpy as np
 
 from init_game import convert
 
@@ -54,8 +55,21 @@ def sapmua(player,card):
                 return 2
     # return False
 
-def future(player,card)
-
+def future(player,card):
+    player = np.array([4,3,0,0])
+    card = [np.array([1,1,0,0]),np.array([0,0,0,1]),0]
+    max = 1000
+    states = []
+    for idnl in range(4):
+        if card[0][idnl] > 0:
+            times = player[idnl]//card[0][idnl]
+            if times < max:
+                max = times
+    # lần = 0
+    for lan in range(max):
+        state = player - card[0]*(lan+1) + card[1]*(lan+1)
+        states.append(state)
+    return states
 
 def action(player, card_normal, card_point, conis):
     # target = [int(i) for i in card_point[0]["give_back"].split("-")]
