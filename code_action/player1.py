@@ -20,13 +20,9 @@ import numpy as np
 from init_game import convert
 
 def can_buy(player,card):
-    mua = True
-    target = list(card["give_back"].values())
-    for nl in range(4):
-        if target[nl] > list(player.material.values())[nl]:
-            mua = False
-            break
-    return mua
+    p = np.array(list(player.material.values()))
+    c = np.array(list(card['give_back'].values()))
+    return min(p-c) >= 0
 
 def sapmua(player,card):
     # sắp mua khi nâng cấp

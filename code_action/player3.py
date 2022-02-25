@@ -17,32 +17,66 @@
 '''
 from init_game import convert
 import numpy as np
-def future(fn,cards):
-    items = []
-    for f in fn:
-        for the in cards:
-            states = []
-            if the['upgrade'] == 0:
-                card = [np.array(list(the['give_back'].values())),np.array(list(the['receive'].values())),0]
-                max = the['times']
-                for idnl in range(4):
-                    if card[0][idnl] > 0:
-                        times = f[idnl]//card[0][idnl]
-                        if times < max:
-                            max = times
-                # lần = 0
-                for lan in range(max):
-                    state = f - card[0]*(lan+1) + card[1]*(lan+1)
-                    while sum(state) > 10:
-                        thua = sum(state) - 10
-                        for idnl in range(4):
-                            state[idnl] -= min(thua,state[idnl])
-                    states.append(state)
-            new_cards = [car for car in cards if car != the]
-            item = [states,new_cards]
-            items.append(item)
-    print(items)
+
+def state_to_states(state):
+    states = []
+    for idnl in range(3):
+        s = state.copy()
+        if s[idnl] > 0:
+            s[idnl] -= 1
+            s[idnl+1] += 1
+            states.append(s)
     return states
+def full_upgrade(state,upgrade):
+    states = [state]
+    full = []
+    while upgrade > 0:
+        temp = []
+        for state in states:
+            temp += state_to_states(state)
+        full += temp
+        states = temp.copy()
+        upgrade -=1
+    return full
+
+
+def future(start_items):
+    items = []
+    for it in start_items:
+        fn = it[0]
+        cards = it[1]
+        for f in fn:
+            for the in cards:
+                states = []
+                if the['upgrade'] == 0:
+                    card = [np.array(list(the['give_back'].values())),np.array(list(the['receive'].values())),0]
+                    max = the['times']
+                    for idnl in range(4):
+                        if card[0][idnl] > 0:
+                            times = f[idnl]//card[0][idnl]
+                            if times < max:
+                                max = times
+                    # lần = 0
+                    for lan in range(max):
+                        state = f - card[0]*(lan+1) + card[1]*(lan+1)
+                        while sum(state) > 10:
+                            thua = sum(state) - 10
+                            for idnl in range(4):
+                                state[idnl] -= min(thua,state[idnl])
+                        states.append(state)
+                else:
+                    times = the['upgrade']
+                    states = full_upgrade(f,times)
+                new_cards = [car for car in cards if car != the]
+                item = [states,new_cards]
+                items.append(item)
+    # print(items)
+    return items
+
+
+def can_buy(state,card):
+    c = np.array(list(card['give_back'].values()))
+    return min(state-c) >= 0
 
 def phanloai(card):
     if card["upgrade"] >0:
@@ -85,7 +119,10 @@ def action(player, card_normal, card_point, conis):
     #         print(card)
         fn = [np.array(list(player.material.values()))]
         cards = player.card_close
-        future(fn,cards)
+        tuonglai = future([[fn,cards]])
+        for nhanh in tuonglai:
+            for nhanh_nho in nhanh[0]:
+                print(nhanh_nho)
     return 'relax'
 
                  
