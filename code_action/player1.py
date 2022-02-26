@@ -76,7 +76,7 @@ def action(player, card_normal, card_point, conis):
             target = list(card["give_back"].values())
         if can_buy(player,card):
             # print("lấy điểm",target,player.material)
-            print(card_point.index(card))
+            # print(card_point.index(card))
             return 'get_card_point',card
     # print(target,player.material)
     trong_tay = list(player.material.values())

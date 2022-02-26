@@ -78,10 +78,28 @@ def future(start_items,targets):
         for state in item[0]:
             for target in targets:
                 if can_buy(state,target):
-                    return target['receive']
-    for item in items:
-        if len(item[1]) == 0:
-            return 0
+                    return target['receive']*1000
+    if len(items) == 0:
+        score = 0
+        for item in items:
+            for state in item[0]:
+                if sum(state*np.array([1,2,3,4])) > score:
+                    score = sum(state*np.array([1,2,3,4]))
+        return score
+    if len(items[0]) == 0:
+        score = 0
+        for item in items:
+            for state in item[0]:
+                if sum(state*np.array([1,2,3,4])) > score:
+                    score = sum(state*np.array([1,2,3,4]))
+        return score
+    if len(items[0][1]) == 0:
+        score = 0
+        for item in items:
+            for state in item[0]:
+                if sum(state*np.array([1,2,3,4])) > score:
+                    score = sum(state*np.array([1,2,3,4]))
+        return score
     return future(items,targets)
 
 def first_gen(f,the):
@@ -107,6 +125,25 @@ def first_gen(f,the):
         states = full_upgrade(f,times)
     return states
 
+def from_state_to_action(target,current):
+    asx = target - current
+    give_back = []
+    receive = []
+    for a in asx:
+        if a < 0:
+            give_back.append(a*(-1))
+        else:
+            give_back.append(0)
+        if a > 0:
+            receive.append(a)
+        else:
+            receive.append(0)
+    return give_back,receive
+
+def lan(target,current,card):
+    a = np.max(current - target)
+    b = np.max(list((card['give_back'].values())))
+    return int(a/b)
 
 def phanloai(card):
     if card["upgrade"] >0:
@@ -144,18 +181,50 @@ def action(player, card_normal, card_point, conis):
         print("lấy thẻ đổi",list(card_n['give_back'].values()),"lấy",list(card_n['receive'].values()))
         return 'get_card_normal', card_n, convert(fee)
     else:
-    #     # nếu không thì chạy engine
-    #     for card in player.card_close:
-    #         print(card)
+       # nếu không thì chạy engine
         fn = [np.array(list(player.material.values()))]
+        for card in card_point:
+            if can_buy(fn[0],card):
+                print("lấy điểm")
+                return 'get_card_point', card
         cards = player.card_close
         tuonglai = future([[fn,cards]],card_point)
-        print(tuonglai)
-        # for nhanh in tuonglai:
-        #     for nhanh_nho in nhanh[0]:
-        #         print(nhanh_nho)
-        # for target in card_point:
-        #     print(target['receive'])
+        # print(tuonglai)
+        card_use = None
+        state_use = None
+        max_score = 0
+        for card_se_dung in cards:
+            cards_new = [car for car in cards if car != card_se_dung]
+            states = first_gen(np.array(list(player.material.values())),card_se_dung)
+            # print(states)
+            for state in states:
+                score = future([[[state],cards_new]],card_point) - sum(fn[0]*np.array([1,2,3,4]))
+                # print(score)
+                if score > max_score:
+                    card_use = card_se_dung
+                    state_use = state
+                    max_score = score
+        print(max_score)
+        # if max_score > 0:
+        #     # print(card_use)
+        #     # dùng thẻ nào
+        #     # print(fn[0],state_use)
+        #     receive,give_back = from_state_to_action(fn[0],state_use)
+        #     give = [str(a) for a in give_back]
+        #     give = "-".join(give)
+        #     rec = [str(a) for a in receive]
+        #     rec = "-".join(rec)
+        #     if card_use['upgrade'] >0:
+        #         print("nâng cấp")
+        #         return 'card_update',card_use, convert(give), convert(rec)
+        #     if sum(card_use['give_back'].values()) ==0:
+        #         print("free nl",give)
+        #         return 'card_get_material', card_use, convert(give)
+        #     else:
+        #         print("đổi nl")
+        #         times = lan(fn[0],state_use,card_use)
+        #         return 'card_exchange', card_use, times, convert(give)
+    # print("nghỉ")
     return 'relax'
 
                  
