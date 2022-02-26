@@ -39,8 +39,12 @@ def full_upgrade(state,upgrade):
         upgrade -=1
     return full
 
+def can_buy(state,card):
+    c = np.array(list(card['give_back'].values()))
+    return min(state-c) >= 0
 
-def future(start_items):
+
+def future(start_items,targets):
     items = []
     for it in start_items:
         fn = it[0]
@@ -70,13 +74,39 @@ def future(start_items):
                 new_cards = [car for car in cards if car != the]
                 item = [states,new_cards]
                 items.append(item)
-    # print(items)
-    return items
+    for item in items:
+        for state in item[0]:
+            for target in targets:
+                if can_buy(state,target):
+                    return target['receive']
+    for item in items:
+        if len(item[1]) == 0:
+            return 0
+    return future(items,targets)
 
+def first_gen(f,the):
+    states = []
+    if the['upgrade'] == 0:
+        card = [np.array(list(the['give_back'].values())),np.array(list(the['receive'].values())),0]
+        max = the['times']
+        for idnl in range(4):
+            if card[0][idnl] > 0:
+                times = f[idnl]//card[0][idnl]
+                if times < max:
+                    max = times
+        # lần = 0
+        for lan in range(max):
+            state = f - card[0]*(lan+1) + card[1]*(lan+1)
+            while sum(state) > 10:
+                thua = sum(state) - 10
+                for idnl in range(4):
+                    state[idnl] -= min(thua,state[idnl])
+            states.append(state)
+    else:
+        times = the['upgrade']
+        states = full_upgrade(f,times)
+    return states
 
-def can_buy(state,card):
-    c = np.array(list(card['give_back'].values()))
-    return min(state-c) >= 0
 
 def phanloai(card):
     if card["upgrade"] >0:
@@ -119,10 +149,13 @@ def action(player, card_normal, card_point, conis):
     #         print(card)
         fn = [np.array(list(player.material.values()))]
         cards = player.card_close
-        tuonglai = future([[fn,cards]])
-        for nhanh in tuonglai:
-            for nhanh_nho in nhanh[0]:
-                print(nhanh_nho)
+        tuonglai = future([[fn,cards]],card_point)
+        print(tuonglai)
+        # for nhanh in tuonglai:
+        #     for nhanh_nho in nhanh[0]:
+        #         print(nhanh_nho)
+        # for target in card_point:
+        #     print(target['receive'])
     return 'relax'
 
                  
